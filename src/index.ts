@@ -1,4 +1,5 @@
 import { CLI } from "./CLI";
+import {menus} from "../constants";
 
 const startupParts = [
   "   __________  ____  ___       ____  ___    _   ____ __",
@@ -13,16 +14,6 @@ const startupParts = [
 
 console.log(startupParts.join("\n"));
 
-// TODO
-
-const cli = new CLI([
-  {
-    title: "Créer un compte",
-    value: "create",
-    action: () => {
-      console.log("Création d'un compte");
-    },
-  },
-]);
+const cli = new CLI(menus);
 
 cli.menu();
