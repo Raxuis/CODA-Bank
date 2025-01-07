@@ -14,8 +14,7 @@ export class BankAccountController {
     // 👇 Regex acceptant les entiers et décimaux
     // + limitant les centimes
     // + évitant les valeurs négatives
-    // + acceptant les espaces
-    private amountRegex = /^\d{1,3}(?:[ ]?\d{3})*(?:[,.]\d{1,2})?$/;
+    private amountRegex = /^\d{1,3}(?:\d{3})*(?:[,.]\d{1,2})?$/;
 
     private isCreatingAccount: boolean = false;
     private account: BankAccount | undefined;
