@@ -1,4 +1,4 @@
-import {createBankAccount} from "../src/utils/BankAccountController";
+import {BankAccountController} from "../src/utils/BankAccountController";
 
 type Menu = {
     title: string,
@@ -6,19 +6,22 @@ type Menu = {
     action: Function
 }
 
+const bankAccountController = new BankAccountController();
+
 export const menus: Menu[] = [
     {
         title: "Créer un compte",
         value: "create",
         action:
             async () => {
-                await createBankAccount();
+                await bankAccountController.createBankAccount();
             }
     },
     {
         title: "Accéder au compte",
         value: "read",
-        action: () => {
+        action: async () => {
+            await bankAccountController.loginBankAccount();
         }
     }
 ]

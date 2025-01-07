@@ -1,12 +1,12 @@
 # Cahier des charges
 
-**Client :** Center Of Data Analysis _(CODA)_  
-**Projet :** Coda Bank  
+**Client :** Center Of Data Analysis _(CODA)_
+**Projet :** Coda Bank
 **Délai accordé :** 3 jours _(fin le : mercredi 8 janvier 2025 à 23h59)_
 
 ## Contexte
 
-Coda _(pas l'école, vous avez bien compris que c'est fictif hein ? 😉)_ vous propose un test technique avant de vous embaucher.  
+Coda _(pas l'école, vous avez bien compris que c'est fictif hein ? 😉)_ vous propose un test technique avant de vous embaucher.
 Vous devez réaliser le prototype d'une application web qui permet de gérer des comptes bancaires.
 
 Cette application doit être développée avec Typescript, et doit être exécutable dans un terminal _(NodeJS)_. Aucune interface graphique n'est requise, tout se fera au travers du terminal.
@@ -63,19 +63,19 @@ Cette application doit être développée avec Typescript, et doit être exécut
 
 ## Contraintes
 
-### Technologies
+### Technologies ✅
 
 - Les choix de l'utilisateur sont gérés par la bibliothèque `prompts`, il faudra installer cette dépendance _(`npm install prompts`)_ pour que l'application fonctionne
 - Vous devez utiliser Typescript _(interdiction d'utiliser un fichier Javascript)_
 - L'utilisation du type `any` est interdite
 - Le projet doit utiliser à minima la version 18 de NodeJS
 
-### Versionning
+### Versionning ✅
 
 - Vous devez utiliser Git pour versionner votre code
 - Les répertoires `dist` et `node_modules` _(par exemple)_ ne doivent pas être versionnés
 
-### Conventions
+### Conventions ✅
 
 - Vous devez respecter les conventions de nommage que vous avez vous-même définies
 - Un fichier `README.md` doit être présent à la racine du projet, expliquant comment installer et exécuter l'application
@@ -115,7 +115,7 @@ Cette application doit être développée avec Typescript, et doit être exécut
 
 ## Bonus
 
-Tu as terminé toutes les fonctionnalités ? Bravo ! 🎉  
+Tu as terminé toutes les fonctionnalités ? Bravo ! 🎉
 Tu peux maintenant ajouter des fonctionnalités supplémentaires pour gagner des points bonus :
 
 - Intégrer des tests unitaires _(Jest ou Mocha)_

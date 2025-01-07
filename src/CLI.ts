@@ -1,5 +1,4 @@
-import type {Choice, PromptType} from "prompts";
-
+import type { Choice, PromptType } from "prompts";
 import prompts from "prompts";
 
 export interface CLIChoice extends Choice {
@@ -62,7 +61,7 @@ export class CLI {
                     title: choice.title,
                     value: choice.value,
                 })),
-                {title: "Quitter", value: "quit"},
+                { title: "Quitter", value: "quit" },
             ],
         });
 
@@ -74,7 +73,7 @@ export class CLI {
         else await this.quit();
 
         console.log("\n");
-        this.menu();
+        await this.menu();
     }
 
     /**
