@@ -39,6 +39,13 @@ export const getMenus = (): Menu[] => {
                     action: () => {
                         console.log("Balance");
                     }
+                },
+                {
+                    title: "Se déconnecter",
+                    value: "logout",
+                    action: () => {
+                        bankAccountController.logout();
+                    }
                 }
             ]
         } else {

@@ -62,6 +62,10 @@ export class BankAccountController {
         }
     }
 
+    public logout(): void {
+        this.isAuthenticated = false;
+    }
+
     public hasAccount(): boolean {
         return !!this.account;
     }
