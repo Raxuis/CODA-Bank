@@ -3,23 +3,54 @@ import {v4 as uuidv4} from 'uuid';
 import {CLI} from "../CLI";
 import {BankAccount} from "../../models/BankAccount";
 
-type PinAction = "login" | "register" | "logout";
+type PinAction = "login" | "register";
+type TransactionAction = "deposit" | "withdraw";
 
 export class BankAccountController {
+
+    // 👇 Regex excluant les lettres et bloquant les caractères à 4 de longueur
     private pinRegex = /^\d{4}$/;
+
+    // 👇 Regex acceptant les entiers et décimaux
+    // + limitant les centimes
+    // + évitant les valeurs négatives
+    // + acceptant les espaces
+    private amountRegex = /^\d{1,3}(?:[ ]?\d{3})*(?:[,.]\d{1,2})?$/;
+
     private isCreatingAccount: boolean = false;
     private account: BankAccount | undefined;
     public isAuthenticated: boolean = false;
 
     private async askPin(action: PinAction): Promise<string> {
         let pin: string = "";
-        const message = action === "register"
-            ? "Entrez un nouveau code PIN (4 chiffres) :"
-            : "Entrez votre code PIN (4 chiffres) :";
+
+        let message: string = action === "register"
+            ? "Entrez un nouveau"
+            : "Entrez votre";
+        message += " code PIN (4 chiffres) :"
+
         do {
             pin = await CLI.askValue(message, "text") as string;
         } while (!this.pinRegex.test(pin))
+
         return pin;
+    }
+
+    private async askTransactionMoney(action: TransactionAction): Promise<string> {
+        let message: string = "Combien d'argent souhaitez-vous";
+        let amount: string = "";
+
+        message += action === "deposit"
+            ? " déposer"
+            : " retirer"
+
+        message += " (en €) ?"
+
+        do {
+            amount = await CLI.askValue(message, "text") as string;
+        } while (!this.amountRegex.test(amount))
+
+        return amount;
     }
 
     private async registerPin(): Promise<string> {
@@ -68,6 +99,26 @@ export class BankAccountController {
 
     public async getBalance(): Promise<void> {
         console.log(this.account!.getMoneyAmount() + "€");
+    }
+
+    public async depositMoney(): Promise<void> {
+        try {
+            const amount = await this.askTransactionMoney("deposit");
+            this.account!.depositMoney(parseFloat(amount));
+            console.log("Voici maintenant l'argent sur votre compte :", this.account!.getMoneyAmount() + "€");
+        } catch (error) {
+            console.error("Erreur lors de la transaction au compte bancaire :", error);
+        }
+    }
+
+    public async withdrawMoney(): Promise<void> {
+        try {
+            const amount = await this.askTransactionMoney("withdraw");
+            this.account!.withdrawMoney(parseFloat(amount));
+            console.log("Voici maintenant l'argent sur votre compte :", this.account!.getMoneyAmount() + "€");
+        } catch (error) {
+            console.error("Erreur lors de la transaction au compte bancaire :", error);
+        }
     }
 
     public hasAccount(): boolean {

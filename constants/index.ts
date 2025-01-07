@@ -15,15 +15,15 @@ export const getMenus = (): Menu[] => {
                 {
                     title: "Déposer de l'argent",
                     value: "deposit",
-                    action: () => {
-                        console.log("Deposit");
+                    action: async () => {
+                        await bankAccountController.depositMoney();
                     }
                 },
                 {
                     title: "Retirer de l'argent",
                     value: "Withdraw",
-                    action: () => {
-                        console.log("Withdraw");
+                    action: async () => {
+                        await bankAccountController.withdrawMoney();
                     }
                 },
                 {

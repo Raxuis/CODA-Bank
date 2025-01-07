@@ -22,4 +22,21 @@ export class BankAccount {
     public getMoneyAmount(): number {
         return this.moneyAmount;
     }
+
+    public depositMoney(transactionMoney: number): void {
+        if (transactionMoney > 0) {
+            this.setMoneyAmount(this.getMoneyAmount() + transactionMoney);
+        } else {
+            throw new Error(`Il n'est pas possible de déposer la somme d'argent : ${transactionMoney}`);
+        }
+    }
+
+    public withdrawMoney(transactionMoney: number): void {
+        if (this.moneyAmount >= transactionMoney) {
+            this.setMoneyAmount(this.getMoneyAmount() - transactionMoney);
+        } else {
+            throw new Error(`Il n'est pas possible de retirer la somme d'argent: ${transactionMoney}`);
+        }
+    }
+
 }
