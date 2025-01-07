@@ -7,19 +7,19 @@ export class BankAccount {
         this.setMoneyAmount(moneyAmount);
     }
 
-    public setPin(pin: string) {
+    public setPin(pin: string): void {
         this.pin = pin;
     }
 
-    public getPin() {
+    public getPin(): string {
         return this.pin;
     }
 
-    public setMoneyAmount(moneyAmount: number) {
+    public setMoneyAmount(moneyAmount: number): void {
         this.moneyAmount = moneyAmount;
     }
 
-    public getMoneyAmount() {
+    public getMoneyAmount(): number {
         return this.moneyAmount;
     }
 }
