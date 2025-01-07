@@ -9,6 +9,7 @@ export class BankAccountController {
     private pinRegex = /^\d{4}$/;
     private isCreatingAccount: boolean = false;
     private account: BankAccount | undefined;
+    public isAuthenticated: boolean = false;
 
     private async askPin(action: PinAction): Promise<string> {
         let pin: string = "";
@@ -16,7 +17,7 @@ export class BankAccountController {
             ? "Entrez un nouveau code PIN (4 chiffres) :"
             : "Entrez votre code PIN (4 chiffres) :";
         do {
-            pin = await CLI.askValue(message, "text");
+            pin = await CLI.askValue(message, "text") as string;
         } while (!this.pinRegex.test(pin))
         return pin;
     }
@@ -52,11 +53,16 @@ export class BankAccountController {
             const isVerified = await this.verifyPin(this.account!.getPin());
             if (isVerified) {
                 console.log("Connexion réussie. Bienvenue !");
+                this.isAuthenticated = true;
             } else {
                 console.error("Échec de la connexion. Code PIN incorrect.");
             }
         } catch (error) {
             console.error("Erreur lors de la connexion au compte bancaire :", error);
         }
+    }
+
+    public hasAccount(): boolean {
+        return !!this.account;
     }
 }

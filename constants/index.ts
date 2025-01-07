@@ -1,4 +1,4 @@
-import {BankAccountController} from "../src/utils/BankAccountController";
+import {BankAccountController} from "../src/controllers/BankAccountController";
 
 type Menu = {
     title: string,
@@ -8,20 +8,59 @@ type Menu = {
 
 const bankAccountController = new BankAccountController();
 
-export const menus: Menu[] = [
-    {
-        title: "Créer un compte",
-        value: "create",
-        action:
-            async () => {
-                await bankAccountController.createBankAccount();
-            }
-    },
-    {
-        title: "Accéder au compte",
-        value: "read",
-        action: async () => {
-            await bankAccountController.loginBankAccount();
+export const getMenus = (): Menu[] => {
+    if (bankAccountController.hasAccount()) {
+        if (bankAccountController.isAuthenticated) {
+            return [
+                {
+                    title: "Déposer de l'argent",
+                    value: "deposit",
+                    action: () => {
+                        console.log("Deposit");
+                    }
+                },
+                {
+                    title: "Retirer de l'argent",
+                    value: "Withdraw",
+                    action: () => {
+                        console.log("Withdraw");
+                    }
+                },
+                {
+                    title: "Voir l'historique",
+                    value: "history",
+                    action: () => {
+                        console.log("History");
+                    }
+                },
+                {
+                    title: "Voir votre argent",
+                    value: "balance",
+                    action: () => {
+                        console.log("Balance");
+                    }
+                }
+            ]
+        } else {
+            return [
+                {
+                    title: "Accéder au compte",
+                    value: "read",
+                    action: async () => {
+                        await bankAccountController.loginBankAccount();
+                    }
+                }
+            ];
         }
+    } else {
+        return [
+            {
+                title: "Créer un compte",
+                value: "create",
+                action: async () => {
+                    await bankAccountController.createBankAccount();
+                }
+            }
+        ];
     }
-]
+};
