@@ -66,6 +66,10 @@ export class BankAccountController {
         this.isAuthenticated = false;
     }
 
+    public async getBalance(): Promise<void> {
+        console.log(this.account!.getMoneyAmount() + "€");
+    }
+
     public hasAccount(): boolean {
         return !!this.account;
     }

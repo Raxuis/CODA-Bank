@@ -36,8 +36,8 @@ export const getMenus = (): Menu[] => {
                 {
                     title: "Voir votre argent",
                     value: "balance",
-                    action: () => {
-                        console.log("Balance");
+                    action: async () => {
+                        await bankAccountController.getBalance();
                     }
                 },
                 {
