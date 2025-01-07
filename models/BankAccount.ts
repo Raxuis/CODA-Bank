@@ -16,7 +16,8 @@ export class BankAccount {
     }
 
     public setMoneyAmount(moneyAmount: number): void {
-        this.moneyAmount = moneyAmount;
+        // 👇 Pour éviter les erreurs lors des transactions
+        this.moneyAmount = parseFloat(moneyAmount.toFixed(2));
     }
 
     public getMoneyAmount(): number {
