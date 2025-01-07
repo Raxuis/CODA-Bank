@@ -11,7 +11,7 @@ export class BankAccount {
         this.pin = pin;
     }
 
-    public getPin(pin: string) {
+    public getPin() {
         return this.pin;
     }
 
