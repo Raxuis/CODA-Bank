@@ -4,7 +4,7 @@ import {CLI} from "../CLI";
 import {BankAccount} from "../../models/BankAccount";
 
 type PinAction = "login" | "register";
-type TransactionAction = "deposit" | "withdraw";
+export type TransactionAction = "deposit" | "withdraw";
 
 export class BankAccountController {
 
@@ -117,6 +117,15 @@ export class BankAccountController {
             console.log("Voici maintenant l'argent sur votre compte :", this.account!.getMoneyAmount() + "€");
         } catch (error) {
             console.error("Erreur lors de la transaction au compte bancaire :", error);
+        }
+    }
+
+    public async getHistoric(): Promise<void> {
+        const historic = this.account!.getTransactions();
+        if (historic.length === 0) {
+            console.log("Aucune transaction n'a été effectuée");
+        } else {
+            console.log(historic);
         }
     }
 

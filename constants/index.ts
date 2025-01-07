@@ -29,8 +29,8 @@ export const getMenus = (): Menu[] => {
                 {
                     title: "Voir l'historique",
                     value: "history",
-                    action: () => {
-                        console.log("History");
+                    action: async () => {
+                        await bankAccountController.getHistoric();
                     }
                 },
                 {
