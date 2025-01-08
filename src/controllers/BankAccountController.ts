@@ -2,6 +2,7 @@ import {v4 as uuidv4} from 'uuid';
 import {BankAccount} from "../models/BankAccount";
 import {Functions} from "../tools/Functions";
 import {Transaction} from "../types";
+import {Style} from "../tools/Style";
 
 export class BankAccountController {
 
@@ -19,9 +20,9 @@ export class BankAccountController {
             const hashedPin: string = await Functions.registerPin();
             const id: string = uuidv4();
             this.account = new BankAccount(id, hashedPin);
-            Functions.print("\nCompte bancaire créé avec succès.");
+            Style.printSuccess("\nCompte bancaire créé avec succès.");
         } catch (error) {
-            Functions.print(`Erreur lors de la création du compte bancaire : ${error}`, true);
+            Style.printError(`Erreur lors de la création du compte bancaire : ${error}`);
         } finally {
             this.isCreatingAccount = false;
         }
@@ -34,29 +35,29 @@ export class BankAccountController {
             this.attempts++;
 
             if (this.attempts >= 3) {
-                Functions.print("⚠️ Doucement, sur le bruteforce ! ⚠️")
+                Style.printColored("⚠️ Doucement, sur le bruteforce ! ⚠️", "yellow")
                 process.exit(0);
             }
 
             if (isVerified) {
-                Functions.print("Connexion réussie. Bienvenue ! 🤗");
+                Style.printColored("Connexion réussie. Bienvenue ! 🤗", "magenta");
 
                 this.isAuthenticated = true;
             } else {
-                Functions.print("Échec de la connexion. Code PIN incorrect.", true);
+                Style.printError("Échec de la connexion. Code PIN incorrect.");
             }
         } catch (error) {
-            Functions.print(`Erreur lors de la connexion au compte bancaire : ${error}`, true);
+            Style.printError(`Erreur lors de la connexion au compte bancaire : ${error}`);
         }
     }
 
     public logout(): void {
         this.isAuthenticated = false;
-        Functions.print("Oh d'accord, bye bye 👋")
+        Style.printColored("Oh d'accord, bye bye 👋", "yellow")
     }
 
     public async getBalance(): Promise<void> {
-        Functions.print(`💸 Vous possédez : ${this.account!.getMoneyAmount()}€ 💸`);
+        Style.printInfo(`💸 Vous possédez : ${this.account!.getMoneyAmount()}€ 💸`);
     }
 
     public async depositMoney(): Promise<void> {
@@ -73,7 +74,7 @@ export class BankAccountController {
         const history: Transaction[] = this.account!.getTransactions();
 
         if (history.length === 0) {
-            Functions.print("Aucune transaction n'a été effectuée");
+            Style.printInfo("Aucune transaction n'a été effectuée");
         } else {
             Functions.printHistory(history);
         }

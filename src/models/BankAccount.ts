@@ -1,5 +1,6 @@
 import {Transaction, TransactionAction} from "../types";
 import {Functions} from "../tools/Functions";
+import {Style} from "../tools/Style";
 
 export class BankAccount {
     public id: string;
@@ -70,7 +71,7 @@ export class BankAccount {
 
             transaction.hasSucceeded = true;
 
-            Functions.print(`💸 Voici maintenant l'argent sur votre compte : ${this.getMoneyAmount()}€ 💸`);
+            Style.print(`💸 Voici maintenant l'argent sur votre compte : ${this.getMoneyAmount()}€ 💸`);
         } else {
             let errorMessage = "❌ Il n'est pas possible de "
             errorMessage += action === "withdraw" ? "retirer" : "déposer"
@@ -78,7 +79,7 @@ export class BankAccount {
 
             transaction.hasSucceeded = false;
 
-            Functions.print(errorMessage, true);
+            Style.printError(errorMessage);
         }
 
         this.saveTransaction(transaction as Transaction);
