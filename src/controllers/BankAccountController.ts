@@ -19,7 +19,7 @@ export class BankAccountController {
             const hashedPin: string = await Fonctions.registerPin();
             const id: string = uuidv4();
             this.account = new BankAccount(id, hashedPin);
-            console.log("\nCompte bancaire créé avec succès :", this.account);
+            console.log("\nCompte bancaire créé avec succès.");
         } catch (error) {
             console.error("Erreur lors de la création du compte bancaire :", error);
         } finally {
@@ -70,7 +70,7 @@ export class BankAccountController {
 
     public async getHistory(): Promise<void> {
         const history: Transaction[] = this.account!.getTransactions();
-        
+
         if (history.length === 0) {
             console.log("Aucune transaction n'a été effectuée");
         } else {
