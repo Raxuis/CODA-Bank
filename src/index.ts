@@ -1,5 +1,5 @@
 import { CLI } from "./CLI";
-import { getMenus } from "../constants";
+import { getMenus } from "./constants";
 
 const startupParts: string[] = [
     "   __________  ____  ___       ____  ___    _   ____ __",

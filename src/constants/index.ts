@@ -1,4 +1,4 @@
-import {BankAccountController} from "../src/controllers/BankAccountController";
+import {BankAccountController} from "../controllers/BankAccountController";
 
 type Menu = {
     title: string,

@@ -1,4 +1,4 @@
-import {TransactionAction} from "../src/controllers/BankAccountController";
+import {TransactionAction} from "../controllers/BankAccountController";
 
 type Transaction = {
     action: TransactionAction,
@@ -50,8 +50,9 @@ export class BankAccount {
             }
 
             this.saveTransaction(transaction);
+            console.log("Voici maintenant l'argent sur votre compte :", this.getMoneyAmount() + "€");
         } else {
-            throw new Error(`Il n'est pas possible de déposer la somme d'argent : ${transactionMoney}`);
+            console.error(`Il n'est pas possible de déposer la somme d'argent : ${transactionMoney}€`);
         }
     }
 
@@ -65,8 +66,9 @@ export class BankAccount {
             }
 
             this.saveTransaction(transaction);
+            console.log("Voici maintenant l'argent sur votre compte :", this.getMoneyAmount() + "€");
         } else {
-            throw new Error(`Il n'est pas possible de retirer la somme d'argent: ${transactionMoney}`);
+            console.error(`Il n'est pas possible de retirer la somme d'argent: ${transactionMoney}€`);
         }
     }
 
