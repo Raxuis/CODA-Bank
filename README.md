@@ -64,6 +64,7 @@ $ npm i
 # Run the project
 $ npm run start
 ```
+You can now use arrow-keys to navigate and return to submit. **✨ Enjoy ✨** 
 
 ## :memo: License ##
 
