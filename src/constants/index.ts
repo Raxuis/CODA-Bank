@@ -16,7 +16,7 @@ export const getMenus: () => Menu[] = (): Menu[] => {
                 },
                 {
                     title: "Retirer de l'argent",
-                    value: "Withdraw",
+                    value: "withdraw",
                     action: async () => {
                         await bankAccountController.withdrawMoney();
                     }
