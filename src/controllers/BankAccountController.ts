@@ -39,7 +39,7 @@ export class BankAccountController {
             }
 
             if (isVerified) {
-                console.log("Connexion réussie. Bienvenue !");
+                console.log("Connexion réussie. Bienvenue ! 🤗");
 
                 this.isAuthenticated = true;
             } else {
@@ -52,10 +52,11 @@ export class BankAccountController {
 
     public logout(): void {
         this.isAuthenticated = false;
+        console.log("Oh d'accord, bye bye 👋")
     }
 
     public async getBalance(): Promise<void> {
-        console.log(`Vous possédez : ${this.account!.getMoneyAmount()}€`);
+        console.log(`💸 Vous possédez : ${this.account!.getMoneyAmount()}€ 💸`);
     }
 
     public async depositMoney(): Promise<void> {
