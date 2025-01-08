@@ -1,12 +1,4 @@
-import {TransactionAction} from "../controllers/BankAccountController";
-
-type Transaction = {
-    action: TransactionAction,
-    moneyAmount: number
-    date: Date
-    balanceAfter: number
-    hasSucceeded: boolean
-}
+import {Transaction} from "../types";
 
 export class BankAccount {
     public id: string;
@@ -27,8 +19,7 @@ export class BankAccount {
     }
 
     public setMoneyAmount(moneyAmount: number): void {
-        // 👇 Pour éviter les erreurs lors des transactions
-        this.moneyAmount = parseFloat(moneyAmount.toFixed(2));
+        this.moneyAmount = moneyAmount;
     }
 
     public getMoneyAmount(): number {
@@ -60,8 +51,6 @@ export class BankAccount {
         }
         this.saveTransaction(transaction as Transaction);
     }
-
-    // TODO: Refactor transaction definition to avoid repeating myself
 
     public withdrawMoney(transactionMoney: number): void {
         const transaction: Partial<Transaction> = {

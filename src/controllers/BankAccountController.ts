@@ -1,15 +1,8 @@
-import bcrypt from 'bcrypt';
 import {v4 as uuidv4} from 'uuid';
-import {CLI} from "../CLI";
 import {BankAccount} from "../models/BankAccount";
-
-type PinAction = "login" | "register";
-export type TransactionAction = "deposit" | "withdraw";
+import {Fonctions} from "../tools/Fonctions";
 
 export class BankAccountController {
-
-    // 👇 Regex excluant les lettres et bloquant les caractères à 4 de longueur
-    private pinRegex: RegExp = /^\d{4}$/;
 
     private isCreatingAccount: boolean = false;
     private account: BankAccount | undefined;
@@ -17,54 +10,12 @@ export class BankAccountController {
 
     private attempts: number = 0;
 
-    private async askPin(action: PinAction): Promise<string> {
-        let pin: string = "";
-
-        let message: string = action === "register"
-            ? "Entrez un nouveau"
-            : "Entrez votre";
-        message += " code PIN (4 chiffres) :"
-
-        do {
-            pin = await CLI.askValue(message, "text") as string;
-        } while (!this.pinRegex.test(pin))
-
-        return pin;
-    }
-
-    private async askTransactionMoney(action: TransactionAction): Promise<number> {
-        let message: string = "Combien d'argent souhaitez-vous";
-        let amount: number = 0;
-
-        message += action === "deposit"
-            ? " déposer"
-            : " retirer"
-
-        message += " (en €) ?"
-
-        do {
-            amount = await CLI.askValue(message, "number") as number;
-        } while (!amount)
-
-        return amount;
-    }
-
-    private async registerPin(): Promise<string> {
-        const pin = await this.askPin("register");
-        return bcrypt.hash(pin, 12);
-    }
-
-    private async verifyPin(storedHash: string): Promise<boolean> {
-        const pin: string = await this.askPin("login");
-        return bcrypt.compare(pin, storedHash);
-    }
-
     public async createBankAccount(): Promise<void> {
         if (this.isCreatingAccount) return;
         this.isCreatingAccount = true;
 
         try {
-            const hashedPin: string = await this.registerPin();
+            const hashedPin: string = await Fonctions.registerPin();
             const id: string = uuidv4();
             this.account = new BankAccount(id, hashedPin);
             console.log("\nCompte bancaire créé avec succès :", this.account);
@@ -77,7 +28,7 @@ export class BankAccountController {
 
     public async loginBankAccount(): Promise<void> {
         try {
-            const isVerified: boolean = await this.verifyPin(this.account!.getPin());
+            const isVerified: boolean = await Fonctions.verifyPin(this.account!.getPin());
             this.attempts++;
             if (this.attempts >= 3) {
                 console.log("⚠️ Doucement, sur le bruteforce ! ⚠️")
@@ -103,12 +54,12 @@ export class BankAccountController {
     }
 
     public async depositMoney(): Promise<void> {
-        const amount = await this.askTransactionMoney("deposit");
+        const amount: number = await Fonctions.askTransactionMoney("deposit");
         this.account!.depositMoney(amount);
     }
 
     public async withdrawMoney(): Promise<void> {
-        const amount = await this.askTransactionMoney("withdraw");
+        const amount: number = await Fonctions.askTransactionMoney("withdraw");
         this.account!.withdrawMoney(amount);
     }
 
@@ -117,6 +68,7 @@ export class BankAccountController {
         if (historic.length === 0) {
             console.log("Aucune transaction n'a été effectuée");
         } else {
+            // TODO: Only show the ten last transactions
             console.log(historic);
         }
     }

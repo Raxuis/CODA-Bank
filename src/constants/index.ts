@@ -1,10 +1,5 @@
 import {BankAccountController} from "../controllers/BankAccountController";
-
-type Menu = {
-    title: string,
-    value: string | number,
-    action: Function
-}
+import {Menu} from "../types";
 
 const bankAccountController = new BankAccountController();
 
