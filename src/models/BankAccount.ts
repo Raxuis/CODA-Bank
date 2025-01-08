@@ -53,13 +53,12 @@ export class BankAccount {
         if (transactionMoney > 0) {
             this.setMoneyAmount(this.getMoneyAmount() + transactionMoney);
             transaction.hasSucceeded = true;
-            this.saveTransaction(transaction as Transaction);
             console.log("Voici maintenant l'argent sur votre compte :", this.getMoneyAmount() + "€");
         } else {
-            temp.hasSucceeded = false;
-            this.saveTransaction(transaction as Transaction);
+            transaction.hasSucceeded = false;
             console.error(`Il n'est pas possible de déposer la somme d'argent : ${transactionMoney}€`);
         }
+        this.saveTransaction(transaction as Transaction);
     }
 
     // TODO: Refactor transaction definition to avoid repeating myself
@@ -74,14 +73,12 @@ export class BankAccount {
         if (this.moneyAmount >= transactionMoney) {
             this.setMoneyAmount(this.getMoneyAmount() - transactionMoney);
             transaction.hasSucceeded = true;
-            this.saveTransaction(transaction as Transaction);
             console.log("Voici maintenant l'argent sur votre compte :", this.getMoneyAmount() + "€");
         } else {
             transaction.hasSucceeded = false;
-            this.saveTransaction(transaction as Transaction);
-
             console.error(`Il n'est pas possible de retirer la somme d'argent: ${transactionMoney}€`);
         }
+        this.saveTransaction(transaction as Transaction);
     }
 
     private saveTransaction(transaction: Transaction): void {
