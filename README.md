@@ -1,3 +1,9 @@
+<div align="center" id="top"> 
+  <img src="https://i.ibb.co/1s7NBbK/What-is-Consumer-Banking.jpg" alt="CODA Bank Banner" />
+
+&#xa0;
+</div>
+
 <h1 align="center">CODA Bank</h1>
 
 <p align="center">
@@ -64,7 +70,7 @@ $ npm i
 # Run the project
 $ npm run start
 ```
-You can now use arrow-keys to navigate and return to submit. **✨ Enjoy ✨** 
+You can now use arrow-keys to navigate and return to submit. **✨ Enjoy ✨**
 
 ## :memo: License ##
 
