@@ -1,6 +1,6 @@
 import { CLI } from "./CLI";
 import { getMenus } from "./constants";
-import {Functions} from "./tools/Functions";
+import {Style} from "./tools/Style";
 
 const startupParts: string[] = [
     "   __________  ____  ___       ____  ___    _   ____ __",
@@ -13,7 +13,7 @@ const startupParts: string[] = [
     "",
 ];
 
-Functions.print(startupParts.join("\n"));
+Style.print(startupParts.join("\n"));
 
 const cli = new CLI(getMenus);
 cli.menu();

@@ -1,6 +1,7 @@
 import type { Choice, PromptType } from "prompts";
 import prompts from "prompts";
 import {Functions} from "./tools/Functions";
+import {Style} from "./tools/Style";
 
 export interface CLIChoice extends Choice {
     action: Function;
@@ -55,7 +56,7 @@ export class CLI {
         if (choice) await choice.action();
         else await this.quit();
 
-        Functions.print("\n");
+        Style.print("\n");
         await this.menu();
     }
 
@@ -66,7 +67,7 @@ export class CLI {
         const randomTime = Math.floor(Math.random() * 2); // Random time between 0 and 2 seconds
         await new Promise((resolve) => setTimeout(resolve, randomTime * 1000));
 
-        Functions.print("Au revoir !");
+        Style.printColored("Au revoir !", "dim");
         process.exit(0);
     }
 }
