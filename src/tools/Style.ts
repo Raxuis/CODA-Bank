@@ -50,11 +50,17 @@ export class Style {
             second: "2-digit",
         });
 
-        const actionColor = transaction.action === "deposit" ? this.colors.green : this.colors.red;
-        const successColor = transaction.hasSucceeded ? this.colors.green : this.colors.red;
+        const actionColor: string = transaction.action === "deposit" ? this.colors.green : this.colors.red;
+        const successColor: string = transaction.hasSucceeded ? this.colors.green : this.colors.red;
 
         this.printInfo(`\nTransaction du ${formattedDateTime} :`);
-        this.print(`${actionColor}Action: ${transaction.action === "deposit" ? "Dépôt" : "Retrait"} de ${transaction.moneyAmount}€${this.colors.reset}`);
+        this.print(`${actionColor}Action: ${
+            transaction.action === "deposit"
+                ? "Dépôt"
+                : "Retrait"
+        } de ${transaction.moneyAmount}€${
+            this.colors.reset
+        }`);
         this.print(`Argent après la transaction: ${transaction.balanceAfter}€`);
         this.print(`${successColor}${transaction.hasSucceeded ? "✅ A fonctionné ✅" : "❌ Échec ❌"}${this.colors.reset}`);
     }
