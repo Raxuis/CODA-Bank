@@ -9,11 +9,13 @@ export type TransactionAction = "deposit" | "withdraw";
 export class BankAccountController {
 
     // 👇 Regex excluant les lettres et bloquant les caractères à 4 de longueur
-    private pinRegex = /^\d{4}$/;
+    private pinRegex: RegExp = /^\d{4}$/;
 
     private isCreatingAccount: boolean = false;
     private account: BankAccount | undefined;
     public isAuthenticated: boolean = false;
+
+    private attempts: number = 0;
 
     private async askPin(action: PinAction): Promise<string> {
         let pin: string = "";
@@ -53,7 +55,7 @@ export class BankAccountController {
     }
 
     private async verifyPin(storedHash: string): Promise<boolean> {
-        const pin = await this.askPin("login");
+        const pin: string = await this.askPin("login");
         return bcrypt.compare(pin, storedHash);
     }
 
@@ -62,8 +64,8 @@ export class BankAccountController {
         this.isCreatingAccount = true;
 
         try {
-            const hashedPin = await this.registerPin();
-            const id = uuidv4();
+            const hashedPin: string = await this.registerPin();
+            const id: string = uuidv4();
             this.account = new BankAccount(id, hashedPin);
             console.log("Compte bancaire créé avec succès :", this.account);
         } catch (error) {
@@ -75,7 +77,12 @@ export class BankAccountController {
 
     public async loginBankAccount(): Promise<void> {
         try {
-            const isVerified = await this.verifyPin(this.account!.getPin());
+            const isVerified: boolean = await this.verifyPin(this.account!.getPin());
+            this.attempts++;
+            if (this.attempts >= 3) {
+                console.log("⚠️ Doucement, sur le bruteforce ! ⚠️")
+                process.exit(0);
+            }
             if (isVerified) {
                 console.log("Connexion réussie. Bienvenue !");
                 this.isAuthenticated = true;
