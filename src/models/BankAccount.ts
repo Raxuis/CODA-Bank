@@ -1,10 +1,15 @@
-import {Transaction} from "../types";
+import {Transaction, TransactionAction} from "../types";
 import {Functions} from "../tools/Functions";
 
 export class BankAccount {
     public id: string;
 
-    constructor(id: string, private pin: string, private moneyAmount: number = 0, private transactions: Transaction[] = []) {
+    constructor(
+        id: string,
+        private pin: string,
+        private moneyAmount: number = 0,
+        private transactions: Transaction[] = []
+    ) {
         this.id = id;
         this.setPin(pin);
         this.setMoneyAmount(moneyAmount);
@@ -35,50 +40,56 @@ export class BankAccount {
         return this.transactions;
     }
 
-    public depositMoney(transactionMoney: number): void {
+    private transferMoneyAmount(transactionMoney: number, action: TransactionAction): void {
         // J'utilise Partial pour éviter de me répéter
-        const transaction: Partial<Transaction> = {
-            action: "deposit",
-            moneyAmount: transactionMoney,
-            date: new Date(),
-            balanceAfter: this.moneyAmount + transactionMoney,
-        };
+        const transaction: Partial<Transaction> =
+            action === "deposit"
+                ? {
+                    action: "deposit",
+                    moneyAmount: transactionMoney,
+                    date: new Date(),
+                    balanceAfter: this.moneyAmount + transactionMoney,
+                } : {
+                    action: "withdraw",
+                    moneyAmount: transactionMoney,
+                    date: new Date(),
+                    balanceAfter: this.moneyAmount - transactionMoney,
+                }
 
-        if (transactionMoney > 0) {
-            this.setMoneyAmount(this.getMoneyAmount() + transactionMoney);
+        const moneyToSet: number =
+            action === "deposit"
+                ? this.getMoneyAmount() + transactionMoney
+                : this.getMoneyAmount() - transactionMoney;
+
+        if (
+            action === "withdraw" && this.moneyAmount >= transactionMoney
+            ||
+            action === "deposit" && transactionMoney > 0
+        ) {
+            this.setMoneyAmount(moneyToSet);
+
             transaction.hasSucceeded = true;
 
             Functions.print(`💸 Voici maintenant l'argent sur votre compte : ${this.getMoneyAmount()}€ 💸`);
         } else {
+            let errorMessage = "❌ Il n'est pas possible de "
+            errorMessage += action === "withdraw" ? "retirer" : "déposer"
+            errorMessage += ` ${transactionMoney}€ ❌`
+
             transaction.hasSucceeded = false;
 
-            Functions.print(`❌ Il n'est pas possible de déposer la somme d'argent : ${transactionMoney}€ ❌`, true);
+            Functions.print(errorMessage, true);
         }
 
         this.saveTransaction(transaction as Transaction);
     }
 
+    public depositMoney(transactionMoney: number): void {
+        this.transferMoneyAmount(transactionMoney, "deposit");
+    }
+
     public withdrawMoney(transactionMoney: number): void {
-
-        const transaction: Partial<Transaction> = {
-            action: "withdraw",
-            moneyAmount: transactionMoney,
-            date: new Date(),
-            balanceAfter: this.moneyAmount - transactionMoney,
-        }
-
-        if (this.moneyAmount >= transactionMoney) {
-            this.setMoneyAmount(this.getMoneyAmount() - transactionMoney);
-            transaction.hasSucceeded = true;
-
-            Functions.print(`💸 Voici maintenant l'argent sur votre compte : ${this.getMoneyAmount()}€ 💸`);
-        } else {
-            transaction.hasSucceeded = false;
-
-            Functions.print(`❌ Il n'est pas possible de déposer la somme d'argent : ${transactionMoney}€ ❌`, true);
-        }
-
-        this.saveTransaction(transaction as Transaction);
+        this.transferMoneyAmount(transactionMoney, "withdraw");
     }
 
     private saveTransaction(transaction: Transaction): void {
