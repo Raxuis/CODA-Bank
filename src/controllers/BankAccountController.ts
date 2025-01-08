@@ -67,7 +67,7 @@ export class BankAccountController {
             const hashedPin: string = await this.registerPin();
             const id: string = uuidv4();
             this.account = new BankAccount(id, hashedPin);
-            console.log("Compte bancaire créé avec succès :", this.account);
+            console.log("\nCompte bancaire créé avec succès :", this.account);
         } catch (error) {
             console.error("Erreur lors de la création du compte bancaire :", error);
         } finally {
