@@ -3,6 +3,9 @@ import {TransactionAction} from "../controllers/BankAccountController";
 type Transaction = {
     action: TransactionAction,
     moneyAmount: number
+    date: Date
+    balanceAfter: number
+    hasSucceeded: boolean
 }
 
 export class BankAccount {
@@ -41,33 +44,42 @@ export class BankAccount {
     }
 
     public depositMoney(transactionMoney: number): void {
+        const transaction: Partial<Transaction> = {
+            action: "deposit",
+            moneyAmount: transactionMoney,
+            date: new Date(),
+            balanceAfter: this.moneyAmount + transactionMoney,
+        };
         if (transactionMoney > 0) {
             this.setMoneyAmount(this.getMoneyAmount() + transactionMoney);
-
-            const transaction: Transaction = {
-                action: "deposit",
-                moneyAmount: transactionMoney,
-            }
-
-            this.saveTransaction(transaction);
+            transaction.hasSucceeded = true;
+            this.saveTransaction(transaction as Transaction);
             console.log("Voici maintenant l'argent sur votre compte :", this.getMoneyAmount() + "€");
         } else {
+            temp.hasSucceeded = false;
+            this.saveTransaction(transaction as Transaction);
             console.error(`Il n'est pas possible de déposer la somme d'argent : ${transactionMoney}€`);
         }
     }
 
+    // TODO: Refactor transaction definition to avoid repeating myself
+
     public withdrawMoney(transactionMoney: number): void {
+        const transaction: Partial<Transaction> = {
+            action: "withdraw",
+            moneyAmount: transactionMoney,
+            date: new Date(),
+            balanceAfter: this.moneyAmount - transactionMoney,
+        }
         if (this.moneyAmount >= transactionMoney) {
             this.setMoneyAmount(this.getMoneyAmount() - transactionMoney);
-
-            const transaction: Transaction = {
-                action: "withdraw",
-                moneyAmount: transactionMoney,
-            }
-
-            this.saveTransaction(transaction);
+            transaction.hasSucceeded = true;
+            this.saveTransaction(transaction as Transaction);
             console.log("Voici maintenant l'argent sur votre compte :", this.getMoneyAmount() + "€");
         } else {
+            transaction.hasSucceeded = false;
+            this.saveTransaction(transaction as Transaction);
+
             console.error(`Il n'est pas possible de retirer la somme d'argent: ${transactionMoney}€`);
         }
     }
