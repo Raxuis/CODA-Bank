@@ -3,7 +3,7 @@ import {Menu} from "../types";
 
 const bankAccountController = new BankAccountController();
 
-export const getMenus = (): Menu[] => {
+export const getMenus: () => Menu[] = (): Menu[] => {
     if (bankAccountController.hasAccount()) {
         if (bankAccountController.isAuthenticated) {
             return [
@@ -25,7 +25,7 @@ export const getMenus = (): Menu[] => {
                     title: "Voir l'historique",
                     value: "history",
                     action: async () => {
-                        await bankAccountController.getHistoric();
+                        await bankAccountController.getHistory();
                     }
                 },
                 {

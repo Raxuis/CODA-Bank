@@ -1,6 +1,7 @@
 import {v4 as uuidv4} from 'uuid';
 import {BankAccount} from "../models/BankAccount";
 import {Fonctions} from "../tools/Fonctions";
+import {Transaction} from "../types";
 
 export class BankAccountController {
 
@@ -63,13 +64,12 @@ export class BankAccountController {
         this.account!.withdrawMoney(amount);
     }
 
-    public async getHistoric(): Promise<void> {
-        const historic = this.account!.getTransactions();
-        if (historic.length === 0) {
+    public async getHistory(): Promise<void> {
+        const history: Transaction[] = this.account!.getTransactions();
+        if (history.length === 0) {
             console.log("Aucune transaction n'a été effectuée");
         } else {
-            // TODO: Only show the ten last transactions
-            console.log(historic);
+            Fonctions.printHistory(history);
         }
     }
 

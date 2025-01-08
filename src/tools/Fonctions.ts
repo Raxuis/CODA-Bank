@@ -1,4 +1,4 @@
-import {PinAction, TransactionAction} from "../types";
+import {PinAction, Transaction, TransactionAction} from "../types";
 import {CLI} from "../CLI";
 import bcrypt from "bcrypt";
 
@@ -46,5 +46,15 @@ export abstract class Fonctions {
         } while (!this.pinRegex.test(pin))
 
         return pin;
+    }
+
+    public static printHistory(history: Transaction[]): void {
+        // TODO: Only show the ten last transactions
+        history.map((ele: Transaction) => {
+            console.log(`Transaction du ${ele.date} :\n`);
+            console.log(`Action: ${ele.action === "deposit" ? "dépot" : "retrait"} de ${ele.moneyAmount}\n`);
+            console.log(`Argent après la transaction: ${ele.balanceAfter}\n`);
+            console.log(`${ele.hasSucceeded ? "✅ A fonctionné ✅" : "❌ Échec ❌"}`)
+        })
     }
 }
