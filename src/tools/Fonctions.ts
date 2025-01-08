@@ -55,6 +55,7 @@ export abstract class Fonctions {
                 (a: Transaction, b: Transaction) =>
                     new Date(b.date).getTime() - new Date(a.date).getTime());
 
+        // 👇 Récupération de seulement les dix premiers (dix derniers en raison de DESC)
         const lastTenTransactions: Transaction[] = sortedHistory.slice(0, 10);
 
         lastTenTransactions.forEach((ele: Transaction) => {
