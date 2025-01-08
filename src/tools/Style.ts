@@ -1,7 +1,7 @@
 import {Transaction} from "../types";
 
 export class Style {
-    private static readonly colors = {
+    private static readonly colors: Record<string, string> = {
         reset: "\x1b[0m",
         bright: "\x1b[1m",
         dim: "\x1b[2m",
