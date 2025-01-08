@@ -1,5 +1,5 @@
-import { CLI } from "./CLI";
-import { getMenus } from "./constants";
+import {CLI} from "./CLI";
+import {getMenus} from "./constants";
 import {Style} from "./tools/Style";
 
 const startupParts: string[] = [
@@ -15,5 +15,5 @@ const startupParts: string[] = [
 
 Style.print(startupParts.join("\n"));
 
-const cli = new CLI(getMenus);
+const cli: CLI = new CLI(getMenus);
 cli.menu();

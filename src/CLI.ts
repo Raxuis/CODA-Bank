@@ -1,6 +1,5 @@
-import type { Choice, PromptType } from "prompts";
+import type {Answers, Choice, PromptType} from "prompts";
 import prompts from "prompts";
-import {Functions} from "./tools/Functions";
 import {Style} from "./tools/Style";
 
 export interface CLIChoice extends Choice {
@@ -25,7 +24,7 @@ export class CLI {
      * Prompts the user to input a value.
      */
     public static async askValue(message: string, type: PromptType = "text"): Promise<string | number> {
-        const response = await prompts({
+        const response: Answers<"value"> = await prompts({
             type,
             name: "value",
             message,
@@ -37,21 +36,21 @@ export class CLI {
      * Displays a menu to the user with the available choices.
      */
     public async menu() {
-        const choices = this.getMenus();
-        const response = await prompts({
+        const choices: CLIChoice[] = this.getMenus();
+        const response: Answers<"action"> = await prompts({
             type: "select",
             name: "action",
             message: "Que voulez-vous faire ?",
             choices: [
-                ...choices.map((choice) => ({
+                ...choices.map((choice: CLIChoice) => ({
                     title: choice.title,
                     value: choice.value,
                 })),
-                { title: "Quitter", value: "quit" },
+                {title: "Quitter", value: "quit"},
             ],
         });
 
-        const choice = choices.find((choice) => choice.value === response.action);
+        const choice: CLIChoice | undefined = choices.find((choice: CLIChoice) => choice.value === response.action);
 
         if (choice) await choice.action();
         else await this.quit();
@@ -64,7 +63,7 @@ export class CLI {
      * Quit the CLI and exit the program.
      */
     private async quit() {
-        const randomTime = Math.floor(Math.random() * 2); // Random time between 0 and 2 seconds
+        const randomTime: number = Math.floor(Math.random() * 2); // Random time between 0 and 2 seconds
         await new Promise((resolve) => setTimeout(resolve, randomTime * 1000));
 
         Style.printColored("Au revoir !", "dim");
