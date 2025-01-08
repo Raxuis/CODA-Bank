@@ -29,14 +29,18 @@ export class BankAccountController {
 
     public async loginBankAccount(): Promise<void> {
         try {
+
             const isVerified: boolean = await Fonctions.verifyPin(this.account!.getPin());
             this.attempts++;
+
             if (this.attempts >= 3) {
                 console.log("⚠️ Doucement, sur le bruteforce ! ⚠️")
                 process.exit(0);
             }
+
             if (isVerified) {
                 console.log("Connexion réussie. Bienvenue !");
+
                 this.isAuthenticated = true;
             } else {
                 console.error("Échec de la connexion. Code PIN incorrect.");
@@ -66,6 +70,7 @@ export class BankAccountController {
 
     public async getHistory(): Promise<void> {
         const history: Transaction[] = this.account!.getTransactions();
+        
         if (history.length === 0) {
             console.log("Aucune transaction n'a été effectuée");
         } else {

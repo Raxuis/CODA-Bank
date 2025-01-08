@@ -7,13 +7,13 @@ export abstract class Fonctions {
     private static pinRegex: RegExp = /^\d{4}$/;
 
     public static async askTransactionMoney(action: TransactionAction): Promise<number> {
+
         let message: string = "Combien d'argent souhaitez-vous";
         let amount: number = 0;
 
         message += action === "deposit"
             ? " déposer"
             : " retirer"
-
         message += " (en €) ?"
 
         do {

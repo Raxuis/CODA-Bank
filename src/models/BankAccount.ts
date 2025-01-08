@@ -35,43 +35,54 @@ export class BankAccount {
     }
 
     public depositMoney(transactionMoney: number): void {
+        // J'utilise Partial pour éviter de me répéter
         const transaction: Partial<Transaction> = {
             action: "deposit",
             moneyAmount: transactionMoney,
             date: new Date(),
             balanceAfter: this.moneyAmount + transactionMoney,
         };
+
         if (transactionMoney > 0) {
             this.setMoneyAmount(this.getMoneyAmount() + transactionMoney);
             transaction.hasSucceeded = true;
+
             console.log("Voici maintenant l'argent sur votre compte :", this.getMoneyAmount() + "€");
         } else {
             transaction.hasSucceeded = false;
+
             console.error(`Il n'est pas possible de déposer la somme d'argent : ${transactionMoney}€`);
         }
+
         this.saveTransaction(transaction as Transaction);
     }
 
     public withdrawMoney(transactionMoney: number): void {
+        
         const transaction: Partial<Transaction> = {
             action: "withdraw",
             moneyAmount: transactionMoney,
             date: new Date(),
             balanceAfter: this.moneyAmount - transactionMoney,
         }
+
         if (this.moneyAmount >= transactionMoney) {
             this.setMoneyAmount(this.getMoneyAmount() - transactionMoney);
             transaction.hasSucceeded = true;
+
             console.log("Voici maintenant l'argent sur votre compte :", this.getMoneyAmount() + "€");
         } else {
             transaction.hasSucceeded = false;
+
             console.error(`Il n'est pas possible de retirer la somme d'argent: ${transactionMoney}€`);
         }
+
         this.saveTransaction(transaction as Transaction);
     }
 
     private saveTransaction(transaction: Transaction): void {
-        const accountTransactions = this.getTransactions();
+        const accountTransactions: Transaction[] = this.getTransactions();
+
         // Je check la longueur du tableau pour ajouter ou simplement set le tableau
         if (accountTransactions.length === 0) {
             this.setTransactions([transaction]);
