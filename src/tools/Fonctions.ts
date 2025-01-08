@@ -49,12 +49,33 @@ export abstract class Fonctions {
     }
 
     public static printHistory(history: Transaction[]): void {
-        // TODO: Only show the ten last transactions
-        history.map((ele: Transaction) => {
-            console.log(`Transaction du ${ele.date} :\n`);
-            console.log(`Action: ${ele.action === "deposit" ? "dépot" : "retrait"} de ${ele.moneyAmount}\n`);
-            console.log(`Argent après la transaction: ${ele.balanceAfter}\n`);
-            console.log(`${ele.hasSucceeded ? "✅ A fonctionné ✅" : "❌ Échec ❌"}`)
-        })
+        // 👇 Triage de l'historique par la date (DESC)
+        const sortedHistory: Transaction[] =
+            history.sort(
+                (a: Transaction, b: Transaction) =>
+                    new Date(b.date).getTime() - new Date(a.date).getTime());
+
+        const lastTenTransactions: Transaction[] = sortedHistory.slice(0, 10);
+
+        lastTenTransactions.forEach((ele: Transaction) => {
+            const formattedDateTime = new Date(ele.date).toLocaleString("fr-FR", {
+                day: "2-digit",
+                month: "long",
+                year: "numeric",
+                hour: "2-digit",
+                minute: "2-digit",
+                second: "2-digit",
+            });
+
+            // Des couleurs simplement pour améliorer le style
+            const actionColor: "\u001B[32m" | "\u001B[31m" = ele.action === "deposit" ? "\x1b[32m" : "\x1b[31m";
+            const successColor: "\u001B[32m" | "\u001B[31m" = ele.hasSucceeded ? "\x1b[32m" : "\x1b[31m";
+
+            console.log(`\n\x1b[36mTransaction du ${formattedDateTime} :\x1b[0m`);
+            console.log(`${actionColor}Action: ${ele.action === "deposit" ? "Dépôt" : "Retrait"} de ${ele.moneyAmount}€\x1b[0m`);
+            console.log(`Argent après la transaction: ${ele.balanceAfter}€`);
+            console.log(`${successColor}${ele.hasSucceeded ? "✅ A fonctionné ✅" : "❌ Échec ❌"}\x1b[0m`);
+        });
     }
+
 }
