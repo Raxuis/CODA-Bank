@@ -1,6 +1,6 @@
 import {v4 as uuidv4} from 'uuid';
 import {BankAccount} from "../models/BankAccount";
-import {Fonctions} from "../tools/Fonctions";
+import {Functions} from "../tools/Functions";
 import {Transaction} from "../types";
 
 export class BankAccountController {
@@ -16,12 +16,12 @@ export class BankAccountController {
         this.isCreatingAccount = true;
 
         try {
-            const hashedPin: string = await Fonctions.registerPin();
+            const hashedPin: string = await Functions.registerPin();
             const id: string = uuidv4();
             this.account = new BankAccount(id, hashedPin);
-            console.log("\nCompte bancaire créé avec succès.");
+            Functions.print("\nCompte bancaire créé avec succès.");
         } catch (error) {
-            console.error("Erreur lors de la création du compte bancaire :", error);
+            Functions.print(`Erreur lors de la création du compte bancaire : ${error}`, true);
         } finally {
             this.isCreatingAccount = false;
         }
@@ -30,42 +30,42 @@ export class BankAccountController {
     public async loginBankAccount(): Promise<void> {
         try {
 
-            const isVerified: boolean = await Fonctions.verifyPin(this.account!.getPin());
+            const isVerified: boolean = await Functions.verifyPin(this.account!.getPin());
             this.attempts++;
 
             if (this.attempts >= 3) {
-                console.log("⚠️ Doucement, sur le bruteforce ! ⚠️")
+                Functions.print("⚠️ Doucement, sur le bruteforce ! ⚠️")
                 process.exit(0);
             }
 
             if (isVerified) {
-                console.log("Connexion réussie. Bienvenue ! 🤗");
+                Functions.print("Connexion réussie. Bienvenue ! 🤗");
 
                 this.isAuthenticated = true;
             } else {
-                console.error("Échec de la connexion. Code PIN incorrect.");
+                Functions.print("Échec de la connexion. Code PIN incorrect.", true);
             }
         } catch (error) {
-            console.error("Erreur lors de la connexion au compte bancaire :", error);
+            Functions.print(`Erreur lors de la connexion au compte bancaire : ${error}`, true);
         }
     }
 
     public logout(): void {
         this.isAuthenticated = false;
-        console.log("Oh d'accord, bye bye 👋")
+        Functions.print("Oh d'accord, bye bye 👋")
     }
 
     public async getBalance(): Promise<void> {
-        console.log(`💸 Vous possédez : ${this.account!.getMoneyAmount()}€ 💸`);
+        Functions.print(`💸 Vous possédez : ${this.account!.getMoneyAmount()}€ 💸`);
     }
 
     public async depositMoney(): Promise<void> {
-        const amount: number = await Fonctions.askTransactionMoney("deposit");
+        const amount: number = await Functions.askTransactionMoney("deposit");
         this.account!.depositMoney(amount);
     }
 
     public async withdrawMoney(): Promise<void> {
-        const amount: number = await Fonctions.askTransactionMoney("withdraw");
+        const amount: number = await Functions.askTransactionMoney("withdraw");
         this.account!.withdrawMoney(amount);
     }
 
@@ -73,9 +73,9 @@ export class BankAccountController {
         const history: Transaction[] = this.account!.getTransactions();
 
         if (history.length === 0) {
-            console.log("Aucune transaction n'a été effectuée");
+            Functions.print("Aucune transaction n'a été effectuée");
         } else {
-            Fonctions.printHistory(history);
+            Functions.printHistory(history);
         }
     }
 

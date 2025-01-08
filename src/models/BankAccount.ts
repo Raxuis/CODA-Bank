@@ -1,4 +1,5 @@
 import {Transaction} from "../types";
+import {Functions} from "../tools/Functions";
 
 export class BankAccount {
     public id: string;
@@ -47,18 +48,18 @@ export class BankAccount {
             this.setMoneyAmount(this.getMoneyAmount() + transactionMoney);
             transaction.hasSucceeded = true;
 
-            console.log("Voici maintenant l'argent sur votre compte :", this.getMoneyAmount() + "€");
+            Functions.print(`💸 Voici maintenant l'argent sur votre compte : ${this.getMoneyAmount()}€ 💸`);
         } else {
             transaction.hasSucceeded = false;
 
-            console.error(`Il n'est pas possible de déposer la somme d'argent : ${transactionMoney}€`);
+            Functions.print(`❌ Il n'est pas possible de déposer la somme d'argent : ${transactionMoney}€ ❌`, true);
         }
 
         this.saveTransaction(transaction as Transaction);
     }
 
     public withdrawMoney(transactionMoney: number): void {
-        
+
         const transaction: Partial<Transaction> = {
             action: "withdraw",
             moneyAmount: transactionMoney,
@@ -70,11 +71,11 @@ export class BankAccount {
             this.setMoneyAmount(this.getMoneyAmount() - transactionMoney);
             transaction.hasSucceeded = true;
 
-            console.log("Voici maintenant l'argent sur votre compte :", this.getMoneyAmount() + "€");
+            Functions.print(`💸 Voici maintenant l'argent sur votre compte : ${this.getMoneyAmount()}€ 💸`);
         } else {
             transaction.hasSucceeded = false;
 
-            console.error(`Il n'est pas possible de retirer la somme d'argent: ${transactionMoney}€`);
+            Functions.print(`❌ Il n'est pas possible de déposer la somme d'argent : ${transactionMoney}€ ❌`, true);
         }
 
         this.saveTransaction(transaction as Transaction);
